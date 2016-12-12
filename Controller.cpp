@@ -1,8 +1,13 @@
 #include "Controller.h"
 #include "Tank.h"
 #include "Map.h"
+#include "Menu.h"
 #include <iostream>
 
+Controller::Controller():Pause(true)
+{
+
+}
 void Controller::Tick()
 {
 	player->Tick();
@@ -23,11 +28,16 @@ void Controller::Tick()
 
 void Controller::Render()
 {
-	player->Render();
-	map->Render();
-	for (int i=0; i<other.size(); ++i) 
+	if(Pause)
+		menu->Render();
+	else
 	{
-		other[i]->Render();
+		player->Render();
+		map->Render();
+		for (int i=0; i<other.size(); ++i) 
+		{
+			other[i]->Render();
+		}
 	}
 }
 
@@ -51,16 +61,32 @@ void Controller::SetMap(Map* map)
 	this->map = map;
 }
 
+void Controller::SetMenu(Menu* menu)
+{
+	this->menu = menu;
+}
+
 void Controller::AddOther(GameObject& o)
 {
 	other.push_back(&o);
 }
 void Controller::Keyboard(unsigned char key)
 {
-	player->Keyboard(key);
+	switch(key) {
+       case 27:
+      Pause = !Pause;
+      break;
+  }
+	if(Pause)
+		menu->Keyboard(key);
+	else
+		player->Keyboard(key);
 }
 void Controller::SpecialKeyboard(int key)
 {
-	player->SpecialKeyboard(key);
+	if(Pause)
+		menu->SpecialKeyboard(key);
+	else
+		player->SpecialKeyboard(key);
 }
 

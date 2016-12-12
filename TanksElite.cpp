@@ -8,7 +8,8 @@
 
 const int DELAY = 30;
 const int WIDTH = 800, HEIGHT = 600;
-const int CELLS_WIDTH = 40, CELLS_HEIGHT = 30;
+const int SCALE = 10;
+
 Controller c;
 
 void Render() {
@@ -38,6 +39,7 @@ int main(int argc, char** argv)
 {
 	c.SetPlayer(new Tank(10, 10, c));
     c.SetMap(new Map("map", 0, 0));
+    c.SetMenu(new Menu(c));
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIDTH, HEIGHT);

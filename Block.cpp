@@ -7,8 +7,6 @@
 #include <ctime>
 #include <random>
 
-const int SCALE = 20;
-
 Block::Block(float x, float y, float width, float height): GameObject(x, y), Rectangle(x, y, width, height), Point(x, y)
 {
 	//std::cout << "Ama Block! " << (x-width/2)*SCALE << " " << (y-height/2)*SCALE << " " << (x+width/2)*SCALE << " " << (y+height/2)*SCALE << " " << std::endl;

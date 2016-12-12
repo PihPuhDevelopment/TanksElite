@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Rectangle.h"
 
+extern const int SCALE;
+
 class Block : public GameObject, public Rectangle
 {
 public:
