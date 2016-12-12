@@ -9,7 +9,7 @@
 
 class Controller;
 
-const int SCALE = 20;
+extern const int SCALE;
 
 class Tank: public GameObject
 {

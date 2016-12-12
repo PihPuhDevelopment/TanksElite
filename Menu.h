@@ -1,17 +1,21 @@
-#ifndef BLOCK_H
-#define BLOCK_H
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
+#ifndef MENU_H
+#define MENU_H
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include "Controller.h"
+
+class Controller;
 
 class Menu 
 {
-	private:
+private:
 	int position;
 	Controller& c;
 public:
-	Menu();
+	Menu(Controller&);
 	void Render();
+	void Keyboard(int);
 	void SpecialKeyboard(int key);
 };
 #endif
