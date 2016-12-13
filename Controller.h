@@ -20,6 +20,7 @@ public:
 	Controller();
 	void Tick();
 	void Render();
+	void NewGame();
 	void ResetGame();
 	void AddPlayerBullet(Bullet b);
 	void SetPlayer(Tank* p);
@@ -27,9 +28,9 @@ public:
 	void SetMenu(Menu* m);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
-	bool Pause;
 private:
 	void HandleBlocks();
+	bool pause;
 	std::vector<Bullet> playerBullets;
 	Menu* menu;
 	Tank* player;

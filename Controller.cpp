@@ -4,7 +4,7 @@
 #include "Menu.h"
 #include <iostream>
 
-Controller::Controller():Pause(true)
+Controller::Controller():pause(true)
 {
 
 }
@@ -36,30 +36,33 @@ void Controller::HandleBlocks()
 
 void Controller::Tick()
 {
-	player->Tick();
-	map->Tick();
-	for (Bullet& bul: playerBullets) 
+	if(!pause)
 	{
-		bul.Tick();
-	}
-	int i = 0;
-	HandleBlocks();
-	auto itr = map->GetBlocks().begin();
-	while (itr != map->GetBlocks().end()) {
-    	if (itr->IsDestructible() && itr->GetHp() <= 0) {
-      		itr = map->GetBlocks().erase(itr);
-    	} 
-    	else 
-    	{
-      		++itr;
-    	}
-  	}
+		player->Tick();
+		map->Tick();
+		for (Bullet& bul: playerBullets) 
+		{
+			bul.Tick();
+		}
 
+		int i = 0;
+		HandleBlocks();
+		auto itr = map->GetBlocks().begin();
+		while (itr != map->GetBlocks().end()) {
+   		 	if (itr->IsDestructible() && itr->GetHp() <= 0) {
+      			itr = map->GetBlocks().erase(itr);
+    		} 
+    		else 
+    		{
+      			++itr;
+    		}
+  		}
+	}
 }
 
 void Controller::Render()
 {
-	if(Pause)
+	if(pause)
 		menu->Render();
 	else
 	{
@@ -70,6 +73,11 @@ void Controller::Render()
 			b.Render();
 		}
 	}
+}
+
+void Controller::NewGame()
+{
+	pause = !pause;
 }
 
 void Controller::ResetGame()
@@ -103,19 +111,14 @@ void Controller::AddPlayerBullet(Bullet b)
 }
 void Controller::Keyboard(unsigned char key)
 {
-	switch(key) {
-       case 27:
-      Pause = !Pause;
-      break;
-  }
-	if(Pause)
+	if(pause)
 		menu->Keyboard(key);
 	else
 		player->Keyboard(key);
 }
 void Controller::SpecialKeyboard(int key)
 {
-	if(Pause)
+	if(pause)
 		menu->SpecialKeyboard(key);
 	else
 		player->SpecialKeyboard(key);
