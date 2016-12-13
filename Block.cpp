@@ -8,7 +8,7 @@
 #include <ctime>
 #include <random>
 
-Block::Block(float x, float y, float width, float height, Color c, bool destr, int _hp = 0): GameObject(x, y), 
+Block::Block(float x, float y, float width, float height, Color c, bool destr, int _hp): GameObject(x, y), 
 									Rectangle(x, y, width, height),  Point(x, y), color(c), destructible(destr), hp(_hp)
 {
 

@@ -9,7 +9,7 @@ extern const int SCALE;
 class Block : public GameObject, public Rectangle
 {
 public:
-	Block(float, float, float, float, Color, bool, int);
+	Block(float, float, float, float, Color, bool, int _hp = 0);
 	void Tick();
 	void Render();
 	void Keyboard(int);
