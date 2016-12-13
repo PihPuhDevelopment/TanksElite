@@ -8,15 +8,9 @@ Controller::Controller():Pause(true)
 {
 
 }
-void Controller::Tick()
+
+void Controller::HandleBlocks()
 {
-	player->Tick();
-	map->Tick();
-	for (Bullet& bul: playerBullets) 
-	{
-		bul.Tick();
-	}
-	int i = 0;
 	for(Block& b: map->GetBlocks())
 	{
 		if(player->Intersects(b))
@@ -38,6 +32,18 @@ void Controller::Tick()
     		}
   		}
 	}
+}
+
+void Controller::Tick()
+{
+	player->Tick();
+	map->Tick();
+	for (Bullet& bul: playerBullets) 
+	{
+		bul.Tick();
+	}
+	int i = 0;
+	HandleBlocks();
 	auto itr = map->GetBlocks().begin();
 	while (itr != map->GetBlocks().end()) {
     	if (itr->IsDestructible() && itr->GetHp() <= 0) {
@@ -66,9 +72,14 @@ void Controller::Render()
 	}
 }
 
-void Controller::AddEnemy(GameObject& enemy)
+void Controller::ResetGame()
 {
-	enemies.push_back(&enemy);
+	delete player;
+	delete map;
+	SetPlayer(new Tank(10, 10, *this));
+    SetMap(new Map("map", 0, 1));
+
+    playerBullets.clear();
 }
 
 void Controller::SetPlayer(Tank* player)

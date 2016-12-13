@@ -20,7 +20,7 @@ public:
 	Controller();
 	void Tick();
 	void Render();
-	void AddEnemy(GameObject& enemy);
+	void ResetGame();
 	void AddPlayerBullet(Bullet b);
 	void SetPlayer(Tank* p);
 	void SetMap(Map* m);
@@ -29,7 +29,7 @@ public:
 	void SpecialKeyboard(int k);
 	bool Pause;
 private:
-	std::vector<GameObject*> enemies;
+	void HandleBlocks();
 	std::vector<Bullet> playerBullets;
 	Menu* menu;
 	Tank* player;
