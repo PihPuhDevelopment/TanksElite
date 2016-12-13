@@ -3,6 +3,7 @@
 #include <GL/glut.h>
 #include <vector>
 #include <iostream>
+#include <chrono>
 #include "Tank.h"
 #include "Rectangle.h"
 #include "Bullet.h"
@@ -12,141 +13,74 @@
 #include "Map.h"
 
 Tank::Tank(): GameObject(), dir(LEFT){  }
-Tank::Tank(float _x, float _y, Controller& _c): Point(_x, _y), dir(LEFT), c(&_c)
+Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), c(&_c)
 {
-    collisionMaps.push_back(Map("Tank/left", 1, 2));
-    collisionMaps.push_back(Map("Tank/up", 1, 2));
-    collisionMaps.push_back(Map("Tank/right", 1, 2));
-    collisionMaps.push_back(Map("Tank/down", 1, 2));
-    y = _y;
+    collisionMaps.push_back(Map("Tank/left", 0, 1));
+    collisionMaps.push_back(Map("Tank/up", 0, 1));
+    collisionMaps.push_back(Map("Tank/right", 0, 1));
+    collisionMaps.push_back(Map("Tank/down", 0, 1));
+    
     x = _x;
+    y = _y;
+
     for(Map& m : collisionMaps)
     {
         m.Translate(_x, _y);
     }
+    prevStepTime = std::chrono::high_resolution_clock::now();
 }
 void Tank::Render() 
-    {
-        collisionMaps[dir].Render();
-        /*switch(dir) 
-        {
-            case LEFT:
-                glColor3ub( 6, 0, 176);
-                glRectf((x-0.4)*SCALE,(y-0.4)*SCALE,(x+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y-0.4)*SCALE,(x-1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y+1-0.4)*SCALE,(x+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y-1-0.4)*SCALE,(x+0.4)*SCALE,(y-1+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y+1-0.4)*SCALE,(x+1+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y-1-0.4)*SCALE,(x+1+0.4)*SCALE,(y-1+0.4)*SCALE);
-                break;
-            case RIGHT:
-                glColor3ub( 6, 0, 176);
-                glRectf((x-0.4)*SCALE,(y-0.4)*SCALE,(x+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y-0.4)*SCALE,(x+1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y+1-0.4)*SCALE,(x+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y-1-0.4)*SCALE,(x+0.4)*SCALE,(y-1+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y+1-0.4)*SCALE,(x-1+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y-1-0.4)*SCALE,(x-1+0.4)*SCALE,(y-1+0.4)*SCALE);
-                break;  
-            case UP:
-                glColor3ub( 6, 0, 176);
-                glRectf((x-0.4)*SCALE,(y-0.4)*SCALE,(x+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y-0.4)*SCALE,(x+1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y-0.4)*SCALE,(x-1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y+1-0.4)*SCALE,(x+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y-1-0.4)*SCALE,(x+1+0.4)*SCALE,(y-1+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y-1-0.4)*SCALE,(x-1+0.4)*SCALE,(y-1+0.4)*SCALE);
-                break;
-            case DOWN:
-                glColor3ub( 6, 0, 176);
-                glRectf((x-0.4)*SCALE,(y-0.4)*SCALE,(x+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-0.4)*SCALE,(y-1-0.4)*SCALE,(x+0.4)*SCALE,(y-1+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y-0.4)*SCALE,(x+1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y-0.4)*SCALE,(x-1+0.4)*SCALE,(y+0.4)*SCALE);
-                glRectf((x+1-0.4)*SCALE,(y+1-0.4)*SCALE,(x+1+0.4)*SCALE,(y+1+0.4)*SCALE);
-                glRectf((x-1-0.4)*SCALE,(y+1-0.4)*SCALE,(x-1+0.4)*SCALE,(y+1+0.4)*SCALE);
-                break;
-        }*/
-    }
+{
+	collisionMaps[dir].Render();
+}
+
+void Tank::Move(Direction d, float dx, float dy)
+{
+	std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> dur = std::chrono::duration_cast<std::chrono::duration<double>>(now - prevStepTime);
+    double seconds = dur.count();
+
+	if(d == dir)
+	{
+		if(seconds >= STEP_TIME)
+		{
+			prevStepTime = std::chrono::high_resolution_clock::now();
+			restoreX = -dx;
+			restoreY = -dy;
+			for(Map& m : collisionMaps)
+        	{
+        	    m.Translate(dx, dy);
+        	}
+        	x += dx;
+        	y += dy;
+    	}	
+	}
+	else
+	{
+		dir = d;
+	}
+}
 
     void Tank::SpecialKeyboard(int key) 
     {
-        switch(key) {
+        	switch(key) {
             case GLUT_KEY_UP: 
-                if(dir == UP)
-                {
-                    restoreX = 0; restoreY = -1;
-                    for(Map& m : collisionMaps)
-                    {
-                        m.Translate(0, 1);
-                    }
-                    y++;
-                }
-                else
-                {
-                    restoreX = 0; restoreY = 0;
-                    prevDir = dir; 
-                }
-                prevDir = dir;
-                dir = UP;
+                Move(UP, 0, 1);
                 break;
 
             case GLUT_KEY_RIGHT: 
-                if(dir == RIGHT)
-                {
-                    restoreX = -1; restoreY = 0;
-                    for(Map& m : collisionMaps)
-                    {
-                        m.Translate(1, 0);
-                    }
-                    x++;
-                }
-                else
-                {
-                    restoreX = 0; restoreY = 0;  
-                }
-                prevDir = dir;
-                dir = RIGHT;
+                Move(RIGHT, 1, 0);
                 break;
 
             case GLUT_KEY_LEFT:
-                if(dir == LEFT)
-                {
-                    restoreX = 1; restoreY = 0;
-                    for(Map& m : collisionMaps)
-                    {
-                        m.Translate(-1, 0);
-                    } 
-                    x--;
-                }
-                else
-                {
-                    restoreX = 0; restoreY = 0;
-                    prevDir = dir;
-                    dir = LEFT;   
-                }
-                prevDir = dir;
-                dir = LEFT;
+                Move(LEFT, -1, 0);
                 break;
 
             case GLUT_KEY_DOWN: 
-                if(dir == DOWN)
-                {
-                    restoreX = 0; restoreY = 1;
-                    for(Map& m : collisionMaps)
-                    {
-                        m.Translate(0, -1);
-                    }
-                    y--;
-                }
-                else
-                {
-                    restoreX = 0; restoreY = 0;  
-                }
-                prevDir = dir;
-                dir = DOWN;
+                Move(DOWN, 0, -1);
                 break;
         }
+        //std::cout << GameObject::Point::x << " " << GameObject::Point::y << std::endl;
     }
 
     void Tank::Keyboard(int key)
@@ -172,20 +106,7 @@ void Tank::Render()
 
     void Tank::Shoot() 
     {
-        c->AddOther(*(new Bullet(x, y, dir)));
-    }
-
-    bool Tank::Intersects(const Rectangle& r)
-    {
-        for(Block& b: collisionMaps[dir].GetBlocks())
-        {
-            //std::cout << r.GetX() << " " << r.GetY() << " " << b.GetX() << " " << b.GetY() << std::endl;
-            if(b.Intersects(r))
-            {
-                return true;
-            }
-        }
-        return false;
+        c->AddOther(*(new Bullet(x+1, y+1, dir)));
     }
 
     Map& Tank::GetCollisionMap()

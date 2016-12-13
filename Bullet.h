@@ -4,6 +4,7 @@
 #include "Rectangle.h"
 #include "Dir.h"
 
+extern const int SCALE;
 
 class Bullet: public GameObject, Rectangle
 {

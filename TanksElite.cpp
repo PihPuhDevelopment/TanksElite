@@ -15,6 +15,7 @@ Controller c;
 void Render() {
 	glFlush();
 	glClear(GL_COLOR_BUFFER_BIT);
+    glRectf(3*SCALE, 3*SCALE, 3.8f*SCALE, 3.8f*SCALE);
 	c.Render();
 }
 
@@ -38,7 +39,7 @@ void SpecialK(int key, int a, int b)
 int main(int argc, char** argv)
 {
 	c.SetPlayer(new Tank(10, 10, c));
-    c.SetMap(new Map("map", 0, 0));
+    c.SetMap(new Map("map", 0, 1));
     c.SetMenu(new Menu(c));
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

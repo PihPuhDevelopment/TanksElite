@@ -1,6 +1,7 @@
 #ifndef TANK_H
 #define TANK_H
 #include <vector>
+#include <chrono>
 #include "Rectangle.h"
 #include "Controller.h"
 #include "GameObject.h"
@@ -11,13 +12,12 @@ class Controller;
 
 extern const int SCALE;
 
-class Tank: public GameObject
+class Tank: public GameObject, public Rectangle
 {
 public:
     Tank();
     Tank(float _x, float _y, Controller& _c);
     Map& GetCollisionMap();
-    bool Intersects(const Rectangle& r);
     void Render();
     void SpecialKeyboard(int key);
     void Keyboard(int key);
@@ -26,11 +26,13 @@ public:
     void Tick();
 
  private:
-  float x, y;
+  void Move(Direction d, float dx, float dy);
+  const double STEP_TIME = 0.1;
   float restoreX, restoreY;
   Direction prevDir;
   Direction dir;
   Controller* c;
   std::vector<Map> collisionMaps;
+  std::chrono::high_resolution_clock::time_point prevStepTime;
 }; 
 #endif
