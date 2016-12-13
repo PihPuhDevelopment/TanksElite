@@ -28,6 +28,9 @@ void Controller::Tick()
 		while (itr != playerBullets.end()) {
     		if (itr->Intersects(b)) {
       			itr = playerBullets.erase(itr);
+      			if(b.IsDestructible()){
+      				b.SetHp(b.GetHp()-1);
+      			}
     		} 
     		else 
     		{
@@ -35,7 +38,16 @@ void Controller::Tick()
     		}
   		}
 	}
-
+	auto itr = map->GetBlocks().begin();
+	while (itr != map->GetBlocks().end()) {
+    	if (itr->IsDestructible() && itr->GetHp() <= 0) {
+      		itr = map->GetBlocks().erase(itr);
+    	} 
+    	else 
+    	{
+      		++itr;
+    	}
+  	}
 
 }
 
