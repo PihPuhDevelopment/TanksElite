@@ -1,6 +1,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <iostream>
 #include "GameObject.h"
 #include "Controller.h"
@@ -15,8 +16,11 @@ Controller c;
 void Render() {
 	glFlush();
 	glClear(GL_COLOR_BUFFER_BIT);
-    glRectf(3*SCALE, 3*SCALE, 3.8f*SCALE, 3.8f*SCALE);
 	c.Render();
+
+    glRasterPos3d(0, 10, 0);
+    
+    glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)"Joppa!!!");
 }
 
 void Tick(int = 0)

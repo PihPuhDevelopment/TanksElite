@@ -28,6 +28,7 @@ Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_
         m.Translate(_x, _y);
     }
     prevStepTime = std::chrono::high_resolution_clock::now();
+    prevShootTime = std::chrono::high_resolution_clock::now();
 }
 void Tank::Render() 
 {
@@ -59,6 +60,7 @@ void Tank::Move(Direction d, float dx, float dy)
 	{
 		dir = d;
 	}
+    prevDir = dir;
 }
 
     void Tank::SpecialKeyboard(int key) 
@@ -80,7 +82,6 @@ void Tank::Move(Direction d, float dx, float dy)
                 Move(DOWN, 0, -1);
                 break;
         }
-        //std::cout << GameObject::Point::x << " " << GameObject::Point::y << std::endl;
     }
 
     void Tank::Keyboard(int key)
@@ -106,7 +107,14 @@ void Tank::Move(Direction d, float dx, float dy)
 
     void Tank::Shoot() 
     {
-        c->AddOther(*(new Bullet(x+1, y+1, dir)));
+        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> dur = std::chrono::duration_cast<std::chrono::duration<double>>(now - prevShootTime);
+        double seconds = dur.count();
+        if(seconds >= RELOAD_TIME)
+        {
+            c->AddOther(*(new Bullet(x+1, y+1, dir)));
+            prevShootTime = std::chrono::high_resolution_clock::now();
+        }
     }
 
     Map& Tank::GetCollisionMap()

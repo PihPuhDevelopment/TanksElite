@@ -28,11 +28,13 @@ public:
  private:
   void Move(Direction d, float dx, float dy);
   const double STEP_TIME = 0.1;
+  const double RELOAD_TIME = 0.8;
   float restoreX, restoreY;
   Direction prevDir;
   Direction dir;
   Controller* c;
   std::vector<Map> collisionMaps;
   std::chrono::high_resolution_clock::time_point prevStepTime;
+  std::chrono::high_resolution_clock::time_point prevShootTime;
 }; 
 #endif
