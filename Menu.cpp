@@ -13,9 +13,26 @@ Menu::Menu(std::string _title, Controller& _c): title(_title), position(0), c(_c
 	items.push_back("EXIT");
 }
 
+void Menu::SelectMenuItem(int pos)
+{
+	switch(pos)
+	{
+		case 0:
+			c.NewGame();
+			break;
+		case 1:
+			exit(0);
+			break;
+	}
+}
+
 void Menu::Keyboard(int key)
 {
-
+	switch(key) {
+		case 13:
+			SelectMenuItem(position);
+		break;   
+	}
 }
 
 void Menu::SpecialKeyboard(int key) 

@@ -19,6 +19,7 @@ public:
 	void Keyboard(int);
 	void SpecialKeyboard(int key);
 private:
+	void SelectMenuItem(int);
 	std::string title;
 	int position;
 	Controller& c;
