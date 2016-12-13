@@ -19,7 +19,6 @@ void Render() {
 	c.Render();
 
     glRasterPos3d(0, 10, 0);
-    
     glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)"Joppa!!!");
 }
 

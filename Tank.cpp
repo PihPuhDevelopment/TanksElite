@@ -112,7 +112,7 @@ void Tank::Move(Direction d, float dx, float dy)
         double seconds = dur.count();
         if(seconds >= RELOAD_TIME)
         {
-            c->AddOther(*(new Bullet(x+1, y+1, dir)));
+            c->AddPlayerBullet(Bullet(x+1, y+1, dir));
             prevShootTime = std::chrono::high_resolution_clock::now();
         }
     }

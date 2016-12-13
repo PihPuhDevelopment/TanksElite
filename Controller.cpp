@@ -12,9 +12,9 @@ void Controller::Tick()
 {
 	player->Tick();
 	map->Tick();
-	for (int i=0; i<other.size(); ++i) 
+	for (Bullet& bul: playerBullets) 
 	{
-		other[i]->Tick();
+		bul.Tick();
 	}
 	int i = 0;
 	for(Block& b: map->GetBlocks())
@@ -23,7 +23,36 @@ void Controller::Tick()
 		{
 			player->Restore();
 		}
+
+		/*for(Bullet& bul: playerBullets)
+		{
+			if(bul.Intersects(b))
+			{
+				playerBullets.remove(bul);
+			}
+		}*/
+		/*for(auto it = playerBullets.begin(); it != playerBullets.end(); it++)
+		{
+			if(it->Intersects(b))
+			{
+				auto next = it + 1;
+				playerBullets.erase(it);
+				it = next;
+			}
+		}*/
+		auto itr = playerBullets.begin();
+		while (itr != playerBullets.end()) {
+    		if (itr->Intersects(b)) {
+      			itr = playerBullets.erase(itr);
+    		} 
+    		else 
+    		{
+      			++itr;
+    		}
+  		}
 	}
+
+
 }
 
 void Controller::Render()
@@ -34,16 +63,11 @@ void Controller::Render()
 	{
 		player->Render();
 		map->Render();
-		for (int i=0; i<other.size(); ++i) 
+		for (Bullet& b: playerBullets) 
 		{
-			other[i]->Render();
+			b.Render();
 		}
 	}
-}
-
-void Controller::AddLevelMapItem(GameObject& item)
-{
-	levelMap.push_back(&item);
 }
 
 void Controller::AddEnemy(GameObject& enemy)
@@ -66,9 +90,9 @@ void Controller::SetMenu(Menu* menu)
 	this->menu = menu;
 }
 
-void Controller::AddOther(GameObject& o)
+void Controller::AddPlayerBullet(Bullet b)
 {
-	other.push_back(&o);
+	playerBullets.push_back(b);
 }
 void Controller::Keyboard(unsigned char key)
 {
