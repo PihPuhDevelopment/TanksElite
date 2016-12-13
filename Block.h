@@ -9,12 +9,17 @@ extern const int SCALE;
 class Block : public GameObject, public Rectangle
 {
 public:
-	Block(float, float, float, float, Color);
+	Block(float, float, float, float, Color, bool, int);
 	void Tick();
 	void Render();
 	void Keyboard(int);
 	void SpecialKeyboard(int);
+	bool IsDestructible() const;
+	int GetHp() const;
+	void SetHp(int);
 private:
 	Color color;
+	bool destructible;
+	int hp;
 };
 #endif
