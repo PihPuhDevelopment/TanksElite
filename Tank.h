@@ -28,7 +28,7 @@ public:
  private:
   void Move(Direction d, float dx, float dy);
   const double STEP_TIME = 0.1;
-  const double RELOAD_TIME = 0.8;
+  const double RELOAD_TIME = 0.3;
   float restoreX, restoreY;
   Direction prevDir;
   Direction dir;
