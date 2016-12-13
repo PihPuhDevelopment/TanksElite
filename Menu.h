@@ -4,18 +4,24 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include "Controller.h"
+#include <string>
 
 class Controller;
 
+extern const int WIDTH;
+extern const int HEIGHT;
+
 class Menu 
 {
-private:
-	int position;
-	Controller& c;
 public:
-	Menu(Controller&);
+	Menu(std::string title, Controller&);
 	void Render();
 	void Keyboard(int);
 	void SpecialKeyboard(int key);
+private:
+	std::string title;
+	int position;
+	Controller& c;
+	std::vector<std::string> items;
 };
 #endif
