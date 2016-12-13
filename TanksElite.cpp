@@ -17,9 +17,6 @@ void Render() {
 	glFlush();
 	glClear(GL_COLOR_BUFFER_BIT);
 	c.Render();
-
-    glRasterPos3d(0, 10, 0);
-    glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)"Joppa!!!");
 }
 
 void Tick(int = 0)
@@ -43,7 +40,7 @@ int main(int argc, char** argv)
 {
 	c.SetPlayer(new Tank(10, 10, c));
     c.SetMap(new Map("map", 0, 1));
-    c.SetMenu(new Menu(c));
+    c.SetMenu(new Menu("TANKS ELITE", c));
 	glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIDTH, HEIGHT);
