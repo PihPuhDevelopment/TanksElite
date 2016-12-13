@@ -24,22 +24,6 @@ void Controller::Tick()
 			player->Restore();
 		}
 
-		/*for(Bullet& bul: playerBullets)
-		{
-			if(bul.Intersects(b))
-			{
-				playerBullets.remove(bul);
-			}
-		}*/
-		/*for(auto it = playerBullets.begin(); it != playerBullets.end(); it++)
-		{
-			if(it->Intersects(b))
-			{
-				auto next = it + 1;
-				playerBullets.erase(it);
-				it = next;
-			}
-		}*/
 		auto itr = playerBullets.begin();
 		while (itr != playerBullets.end()) {
     		if (itr->Intersects(b)) {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include "Block.h"
+#include "Color.h"
 
 Map::Map(const std::string& filename, float origin_x, float origin_y) : Point(origin_x, origin_y)
 {
@@ -49,9 +50,12 @@ void Map::ReadMapFromFile(const std::string& filename)
 		for(int j = 0; j <= w; j++)
 		{
 			buf = fin.get();
-			if(buf == '1')
+			switch(buf)
 			{
-				blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f));
+				case '1':	blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(0.5f, 0.5f, 0.5f)));
+							break;
+				case '2':	blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(0.1f, 0.831f, 0.0f)));
+							break;
 			}
 		}
 	}
