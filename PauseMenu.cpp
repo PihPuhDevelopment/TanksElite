@@ -2,17 +2,17 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/freeglut.h>
-#include "Menu.h"
-#include "MenuBase.h"
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <vector>
+#include "PauseMenu.h"
+#include "MenuBase.h"
 
-Menu::Menu(std::string _title, Controller* _c): MenuBase(_title, _c)
+PauseMenu::PauseMenu(std::string _title, Controller* _c): MenuBase(_title, _c)
 {
-	items.push_back("NEW GAME");
-	items.push_back("EXIT");
+	items.push_back("CONTINUE");
+	items.push_back("EXIT GAME");
 }
 
 void Menu::SelectMenuItem(int pos)
@@ -20,10 +20,10 @@ void Menu::SelectMenuItem(int pos)
 	switch(pos)
 	{
 		case 0:
-			c->NewGame();
+			c->Continue();
 			break;
 		case 1:
-			exit(0);
+			c-StopGame();
 			break;
 	}
 }

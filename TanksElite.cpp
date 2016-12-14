@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Controller.h"
 #include "Tank.h"
+#include "Menu.h"
 
 const int DELAY = 30;
 const int WIDTH = 800, HEIGHT = 600;
@@ -41,7 +42,7 @@ int main(int argc, char** argv)
     c.SetPlayer(new Tank(10, 10, c));
     c.SetEnemies(Tank(10, 40, c), Tank(40, 40, c), Tank(70, 40, c));
     c.SetMap(new Map("map", 0, 1));
-    c.SetMenu(new Menu("TANKS ELITE", c));
+    c.SetMenu(new Menu("TANKS ELITE", &c));
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIDTH, HEIGHT);

@@ -1,5 +1,5 @@
-TanksElite: TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o
-	g++ -g TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o -o TanksElite -lglut -lGL -lGLU -lGLEW
+TanksElite: TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o MenuBase.o
+	g++ -g TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o MenuBase.o -o TanksElite -lglut -lGL -lGLU -lGLEW
 
 TanksElite.o: TanksElite.cpp
 	g++ -c -g TanksElite.cpp -std=c++11
@@ -27,7 +27,12 @@ Map.o: Map.cpp
 
 Block.o: Block.cpp
 	g++ -c -g Block.cpp -std=c++11
+
+MenuBase.o: MenuBase.cpp
+	g++ -c -g MenuBase.cpp -std=c++11
+
 Menu.o: Menu.cpp
 	g++ -c -g Menu.cpp -std=c++11
+
 clean:
 	rm -f *.o *.a *.out binary

@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef PAUSEMENU_H
+#define PAUSEMENU_H
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -12,10 +12,10 @@ class Controller;
 extern const int WIDTH;
 extern const int HEIGHT;
 
-class Menu : public MenuBase
+class PauseMenu : public MenuBase
 {
 public:
-	Menu(std::string title, Controller* c);
+	PauseMenu(std::string title, Controller* c);
 private:
 	void SelectMenuItem(int);
 };

@@ -1,11 +1,11 @@
+#include <iostream>
+#include <cstdlib>
 #include "Controller.h"
 #include "Tank.h"
 #include "Map.h"
 #include "Menu.h"
-#include <iostream>
-#include <cstdlib>
 
-Controller::Controller():pause(true)
+Controller::Controller(): start(false), pause(false)
 {
 	count = 0;
 	keys.reserve(5);
@@ -62,6 +62,8 @@ void Controller::HandleBlocks()
 
 void Controller::Tick()
 {
+	if(start)
+	{
 	count ++;
 	player->Tick();
 	map->Tick();
@@ -97,12 +99,25 @@ void Controller::Tick()
  			enemies[i].SpecialKeyboard(keys[rand()%5]);
 		}
 	}
-
+	}
 }
 
 void Controller::NewGame()
 {
+	ResetGame();
+	pause = false;
+	start = true;
+}
+
+void Controller::Continue()
+{
 	pause = !pause;
+}
+
+void Controller::StopGame()
+{
+	pause = false;
+	start = false;
 }
 
 void Controller::Render()

@@ -5,7 +5,6 @@
 #include "Tank.h"
 #include "Map.h"
 #include "Bullet.h"
-#include "Menu.h"
 #include <vector>
 
 class Tank;
@@ -18,6 +17,8 @@ public:
 	void Tick();
 	void Render();
 	void NewGame();
+	void Continue();
+	void StopGame();
 	void ResetGame();
 	void AddPlayerBullet(Bullet b);
 	void AddEnemyBullet(Bullet b);
@@ -27,7 +28,6 @@ public:
 	void SetMenu(Menu* m);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
-	bool pause;
 private:
 	void HandleBlocks();
 	std::vector<Bullet> playerBullets;
@@ -35,9 +35,11 @@ private:
 	std::vector<Tank> enemies;
 	std::vector<int> keys;
 	Menu* menu;
+	PauseMenu* pmenu;
 	Tank* player;
 	Map* map;
-
+	bool pause;
+	bool start;
 	int count;
 };
 #endif
