@@ -9,6 +9,7 @@
 
 class Tank;
 class Menu;
+class PauseMenu;
 
 class Controller
 {	
@@ -26,8 +27,10 @@ public:
     void SetEnemies(Tank e1,Tank e2,Tank e3);
 	void SetMap(Map* m);
 	void SetMenu(Menu* m);
+	void SetPauseMenu(PauseMenu* m);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
+	~Controller();
 private:
 	void HandleBlocks();
 	std::vector<Bullet> playerBullets;

@@ -15,7 +15,7 @@ PauseMenu::PauseMenu(std::string _title, Controller* _c): MenuBase(_title, _c)
 	items.push_back("EXIT GAME");
 }
 
-void Menu::SelectMenuItem(int pos)
+void PauseMenu::SelectMenuItem(int pos)
 {
 	switch(pos)
 	{
@@ -23,7 +23,7 @@ void Menu::SelectMenuItem(int pos)
 			c->Continue();
 			break;
 		case 1:
-			c-StopGame();
+			c->StopGame();
 			break;
 	}
 }

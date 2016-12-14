@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "Map.h"
 #include "Menu.h"
+#include "PauseMenu.h"
 
 Controller::Controller(): start(false), pause(false)
 {
@@ -64,42 +65,79 @@ void Controller::Tick()
 {
 	if(start)
 	{
-	count ++;
-	player->Tick();
-	map->Tick();
-	for (int i=0; i<3; ++i)
-		enemies[i].Tick();
-	for (Bullet& bul: playerBullets) 
-	{
-		bul.Tick();
-	}
-	for (Bullet& bul: enemyBullets) 
-	{
-		bul.Tick();
-	}
-	int i = 0;
-	HandleBlocks();
-	auto itr = map->GetBlocks().begin();
-	while (itr != map->GetBlocks().end()) {
-	    	if (itr->IsDestructible() && itr->GetHp() <= 0) {
-	      		itr = map->GetBlocks().erase(itr);
-	    	} 
-	    	else 
-	    	{
-	      		++itr;
-	    	}
-  	}
-
-	if(!(count%4))
-	{
-		std::cout << count << std::endl;
-		for (int i=0; i<3; ++i)
+		if(!pause)
 		{
-			enemies[i].Keyboard(keys[rand()%5]);
- 			enemies[i].SpecialKeyboard(keys[rand()%5]);
+			count ++;
+			player->Tick();
+			map->Tick();
+
+			for (int i=0; i<3; ++i)
+				enemies[i].Tick();
+
+			for (Bullet& bul: playerBullets) 
+			{
+				bul.Tick();
+			}
+
+			for (Bullet& bul: enemyBullets) 
+			{
+				bul.Tick();
+			}
+
+			HandleBlocks();
+
+			int i = 0;
+			auto itr = map->GetBlocks().begin();
+			while (itr != map->GetBlocks().end()) { 
+	    		if (itr->IsDestructible() && itr->GetHp() <= 0) {
+	      			itr = map->GetBlocks().erase(itr);
+	    		} 
+	    		else 
+	    		{
+	      			++itr;
+	    		}
+  			}
+
+		if(!(count%4))
+		{
+			std::cout << count << std::endl;
+			for (int i=0; i<3; ++i)
+			{
+				enemies[i].Keyboard(keys[rand()%5]);
+ 				enemies[i].SpecialKeyboard(keys[rand()%5]);
+			}
+		}
 		}
 	}
+}
+
+void Controller::Render()
+{
+	if(!start)
+		menu->Render();
+	else
+	{
+		if(!pause)
+		{
+			player->Render();
+			for (int i=0; i<3; ++i)
+				enemies[i].Render();
+			map->Render();
+			for (Bullet& b: playerBullets) 
+			{
+				b.Render();
+			}
+			for (Bullet& b: enemyBullets) 
+			{
+				b.Render();
+			}
+		}
+		else
+		{
+			pmenu->Render();
+		}
 	}
+	
 }
 
 void Controller::NewGame()
@@ -120,33 +158,12 @@ void Controller::StopGame()
 	start = false;
 }
 
-void Controller::Render()
-{
-	if(pause)
-		menu->Render();
-	else
-	{
-		player->Render();
-		for (int i=0; i<3; ++i)
-			enemies[i].Render();
-		map->Render();
-		for (Bullet& b: playerBullets) 
-		{
-			b.Render();
-		}
-		for (Bullet& b: enemyBullets) 
-		{
-			b.Render();
-		}
-	}
-}
-
 void Controller::ResetGame()
 {
 	delete map;
 	delete player;
 	SetPlayer(new Tank(10, 10, *this));
-	SetEnemies(Tank(10, 40, *this), Tank(40, 40, *this), Tank(70, 40, *this));//check
+	SetEnemies(Tank(10, 40, *this), Tank(40, 40, *this), Tank(70, 40, *this));
    	SetMap(new Map("map", 0, 1));
 	playerBullets.clear();
 	enemyBullets.clear();
@@ -173,6 +190,11 @@ void Controller::SetMenu(Menu* menu)
 	this->menu = menu;
 }
 
+void Controller::SetPauseMenu(PauseMenu* menu)
+{
+	pmenu = menu;
+}
+
 void Controller::AddPlayerBullet(Bullet b)
 {
 	playerBullets.push_back(b);
@@ -183,24 +205,42 @@ void Controller::AddEnemyBullet(Bullet b)
 }
 void Controller::Keyboard(unsigned char key)
 {
-	switch(key) {
-	  case 27:
-      		pause = !pause;
-     		 break;
-  	}
-	if(pause)
-		menu->Keyboard(key);
-	else 
+	if(start)
 	{
-		player->Keyboard(key);
+		switch(key) {
+		case 27:
+			pause = !pause;
+			break;
+  		}
+		if(pause)
+			pmenu->Keyboard(key);
+		else
+			player->Keyboard(key);
+	}
+	else
+	{
+		menu->Keyboard(key);
 	}
 }
 void Controller::SpecialKeyboard(int key)
 {
-	if(pause)
-		menu->SpecialKeyboard(key);
+	if(start)
+	{
+		if(pause)
+			pmenu->SpecialKeyboard(key);
+		else
+			player->SpecialKeyboard(key);
+	}
 	else
 	{
-		player->SpecialKeyboard(key);
+		menu->SpecialKeyboard(key);
 	}
+}
+
+Controller::~Controller()
+{
+	delete menu;
+	delete pmenu;
+	delete player;
+	delete map;
 }
