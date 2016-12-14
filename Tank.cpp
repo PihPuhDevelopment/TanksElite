@@ -13,7 +13,7 @@
 #include "Map.h"
 
 Tank::Tank(): GameObject(), dir(LEFT){  }
-Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), c(&_c)
+Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c)
 {
     collisionMaps.push_back(Map("Tank/left", 0, 1));
     collisionMaps.push_back(Map("Tank/up", 0, 1));
