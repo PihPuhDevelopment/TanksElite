@@ -2,6 +2,7 @@
 #define TANK_H
 #include <vector>
 #include <chrono>
+#include <string>
 #include "Rectangle.h"
 #include "Controller.h"
 #include "GameObject.h"
@@ -16,7 +17,7 @@ class Tank: public GameObject, public Rectangle
 {
 public:
     Tank();
-    Tank(float _x, float _y, Controller& _c);
+    Tank(float _x, float _y, std::string texfolder, Controller& _c);
     Tank(const Tank& other);
     Tank& operator=(const Tank&);
     Map& GetCollisionMap();

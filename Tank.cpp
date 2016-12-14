@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <chrono>
+#include <string>
 #include "Tank.h"
 #include "Rectangle.h"
 #include "Bullet.h"
@@ -13,12 +14,12 @@
 #include "Map.h"
 
 Tank::Tank(): GameObject(), dir(LEFT){  }
-Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c)
+Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c)
 {
-    collisionMaps.push_back(Map("Tank/left", 0, 1));
-    collisionMaps.push_back(Map("Tank/up", 0, 1));
-    collisionMaps.push_back(Map("Tank/right", 0, 1));
-    collisionMaps.push_back(Map("Tank/down", 0, 1));
+    collisionMaps.push_back(Map(texfolder+"/left", 0, 1));
+    collisionMaps.push_back(Map(texfolder+"/up", 0, 1));
+    collisionMaps.push_back(Map(texfolder+"/right", 0, 1));
+    collisionMaps.push_back(Map(texfolder+"/down", 0, 1));
     
     x = _x;
     y = _y;
