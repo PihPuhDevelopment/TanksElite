@@ -162,8 +162,8 @@ void Controller::ResetGame()
 {
 	delete map;
 	delete player;
-	SetPlayer(new Tank(10, 10, *this));
-	SetEnemies(Tank(10, 40, *this), Tank(40, 40, *this), Tank(70, 40, *this));
+	SetPlayer(new Tank(10, 10, "Tank", *this));
+	SetEnemies(Tank(10, 40, "Enemy", *this), Tank(40, 40, "Enemy", *this), Tank(70, 30, "Enemy", *this));
    	SetMap(new Map("map", 0, 1));
 	playerBullets.clear();
 	enemyBullets.clear();
