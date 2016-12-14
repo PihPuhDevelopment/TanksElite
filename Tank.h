@@ -17,6 +17,8 @@ class Tank: public GameObject, public Rectangle
 public:
     Tank();
     Tank(float _x, float _y, Controller& _c);
+    Tank(const Tank& other);
+    Tank& operator=(const Tank&);
     Map& GetCollisionMap();
     void Render();
     void SpecialKeyboard(int key);

@@ -30,6 +30,39 @@ Tank::Tank(float _x, float _y, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_
     prevStepTime = std::chrono::high_resolution_clock::now();
     prevShootTime = std::chrono::high_resolution_clock::now();
 }
+
+Tank::Tank(const Tank& t)
+{
+    x = t.x;
+    y = t.y;
+    width = t.width;
+    height = t.height;
+    restoreX = t.restoreX;
+    restoreY = t.restoreY;
+    prevDir = t.prevDir;
+    dir = t.dir;
+    c = t.c;
+    collisionMaps = t.collisionMaps;
+    prevStepTime = t.prevStepTime;
+    prevShootTime = t.prevShootTime;
+}
+
+Tank& Tank::operator=(const Tank& t)
+{
+    x = t.x;
+    y = t.y;
+    width = t.width;
+    height = t.height;
+    restoreX = t.restoreX;
+    restoreY = t.restoreY;
+    prevDir = t.prevDir;
+    dir = t.dir;
+    c = t.c;
+    collisionMaps = t.collisionMaps;
+    prevStepTime = t.prevStepTime;
+    prevShootTime = t.prevShootTime;
+}
+
 void Tank::Render() 
 {
 	collisionMaps[dir].Render();

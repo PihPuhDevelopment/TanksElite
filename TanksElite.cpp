@@ -38,10 +38,11 @@ void SpecialK(int key, int a, int b)
 
 int main(int argc, char** argv)
 {
-	c.SetPlayer(new Tank(10, 10, c));
+    c.SetPlayer(new Tank(10, 10, c));
+    c.SetEnemies(Tank(10, 40, c), Tank(40, 40, c), Tank(70, 40, c));
     c.SetMap(new Map("map", 0, 1));
     c.SetMenu(new Menu("TANKS ELITE", c));
-	glutInit(&argc, argv);
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(WIDTH, HEIGHT);
     glutCreateWindow("TanksElite");

@@ -1,6 +1,3 @@
-/*
-Класс хранит все объекты игры и отвечает за их обновление и взаимодействие.
-*/
 
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
@@ -23,17 +20,24 @@ public:
 	void NewGame();
 	void ResetGame();
 	void AddPlayerBullet(Bullet b);
+	void AddEnemyBullet(Bullet b);
 	void SetPlayer(Tank* p);
+    void SetEnemies(Tank e1,Tank e2,Tank e3);
 	void SetMap(Map* m);
 	void SetMenu(Menu* m);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
+	bool pause;
 private:
 	void HandleBlocks();
-	bool pause;
 	std::vector<Bullet> playerBullets;
+    std::vector<Bullet> enemyBullets;
+	std::vector<Tank> enemies;
+	std::vector<int> keys;
 	Menu* menu;
 	Tank* player;
 	Map* map;
+
+	int count;
 };
 #endif

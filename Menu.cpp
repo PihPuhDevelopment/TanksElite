@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <vector>
 
 Menu::Menu(std::string _title, Controller& _c): title(_title), position(0), c(_c)
 {
