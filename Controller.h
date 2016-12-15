@@ -24,7 +24,6 @@ public:
 	void AddPlayerBullet(Bullet b);
 	void AddEnemyBullet(Bullet b);
 	void SetPlayer(Tank* p);
-    void SetEnemies(Tank e1,Tank e2,Tank e3);
 	void SetMap(Map* m);
 	void SetMenu(Menu* m);
 	void SetPauseMenu(PauseMenu* m);
@@ -35,14 +34,14 @@ private:
 	void HandleBlocks();
 	std::vector<Bullet> playerBullets;
     std::vector<Bullet> enemyBullets;
-	std::vector<Tank> enemies;
-	std::vector<int> keys;
+	std::vector<Bot> enemies;
+
 	Menu* menu;
 	PauseMenu* pmenu;
 	Tank* player;
 	Map* map;
+
 	bool pause;
 	bool start;
-	int count;
 };
 #endif

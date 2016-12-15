@@ -40,8 +40,8 @@ void SpecialK(int key, int a, int b)
 
 int main(int argc, char** argv)
 {
-    c.SetPlayer(new Tank(10, 10, "Tank", c));
-    c.SetEnemies(Tank(10, 40, "Enemy", c), Tank(40, 40, "Enemy", c), Tank(70, 30, "Enemy", c));
+    srand(time(0));
+    c.SetPlayer(new Tank(10, 10, "Tank", c, false));
     c.SetMap(new Map("map", 0, 1));
     c.SetMenu(new Menu("TANKS ELITE", &c));
     c.SetPauseMenu(new PauseMenu("PAUSE", &c));

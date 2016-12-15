@@ -8,13 +8,7 @@
 
 Controller::Controller(): start(false), pause(false)
 {
-	count = 0;
-	keys.reserve(5);
-	keys.push_back(GLUT_KEY_DOWN);
-	keys.push_back(GLUT_KEY_LEFT);
-	keys.push_back(32);
-	keys.push_back(GLUT_KEY_RIGHT);
-	keys.push_back(GLUT_KEY_UP);
+
 }
 
 void Controller::HandleBlocks()
@@ -98,15 +92,10 @@ void Controller::Tick()
 	    		}
   			}
 
-		if(!(count%4))
-		{
-			std::cout << count << std::endl;
-			for (int i=0; i<3; ++i)
-			{
-				enemies[i].Keyboard(keys[rand()%5]);
- 				enemies[i].SpecialKeyboard(keys[rand()%5]);
-			}
-		}
+			  for(Bot& b: enemies)
+			  {
+				  b.Tick();
+			  }
 		}
 	}
 }
@@ -120,14 +109,23 @@ void Controller::Render()
 		if(!pause)
 		{
 			player->Render();
+
 			for (int i=0; i<3; ++i)
 				enemies[i].Render();
+
 			map->Render();
+
 			for (Bullet& b: playerBullets) 
 			{
 				b.Render();
 			}
+
 			for (Bullet& b: enemyBullets) 
+			{
+				b.Render();
+			}
+
+			for(Bot& b: enemies)
 			{
 				b.Render();
 			}
@@ -163,7 +161,6 @@ void Controller::ResetGame()
 	delete map;
 	delete player;
 	SetPlayer(new Tank(10, 10, "Tank", *this));
-	SetEnemies(Tank(10, 40, "Enemy", *this), Tank(40, 40, "Enemy", *this), Tank(70, 30, "Enemy", *this));
    	SetMap(new Map("map", 0, 1));
 	playerBullets.clear();
 	enemyBullets.clear();
@@ -172,12 +169,6 @@ void Controller::ResetGame()
 void Controller::SetPlayer(Tank* player)
 {
 	this->player = player;
-}
-void Controller::SetEnemies(Tank enemy1,Tank enemy2,Tank enemy3)
-{
-	enemies.push_back(enemy1);
-	enemies.push_back(enemy2);
-	enemies.push_back(enemy3);
 }
 
 void Controller::SetMap(Map* map)
@@ -199,10 +190,12 @@ void Controller::AddPlayerBullet(Bullet b)
 {
 	playerBullets.push_back(b);
 }
+
 void Controller::AddEnemyBullet(Bullet b)
 {
 	enemyBullets.push_back(b);
 }
+
 void Controller::Keyboard(unsigned char key)
 {
 	if(start)
