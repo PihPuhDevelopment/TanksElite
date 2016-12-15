@@ -15,7 +15,7 @@ public:
 	virtual void Keyboard(int key) = 0;
 	virtual void SpecialKeyboard(int key) = 0;
 	bool IsDead();
-private:
+protected:
 	bool dead;
 };
 #endif

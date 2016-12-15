@@ -10,6 +10,7 @@
 class Tank;
 class Menu;
 class PauseMenu;
+class LoseMenu;
 class Bot;
 
 class Controller
@@ -28,21 +29,27 @@ public:
 	void SetMap(Map* m);
 	void SetMenu(Menu* m);
 	void SetPauseMenu(PauseMenu* m);
+	void SetLoseMenu(LoseMenu* m);
+	void AddBot(Bot b);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
 	~Controller();
 private:
 	void HandleBlocks();
+	void HandleBullets();
+	int score;
 	std::vector<Bullet> playerBullets;
     std::vector<Bullet> enemyBullets;
 	std::vector<Bot> enemies;
 
 	Menu* menu;
 	PauseMenu* pmenu;
+	LoseMenu* lmenu;
 	Tank* player;
 	Map* map;
 
 	bool pause;
 	bool start;
+	bool lose;
 };
 #endif

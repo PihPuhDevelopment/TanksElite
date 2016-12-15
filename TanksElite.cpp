@@ -6,8 +6,10 @@
 #include "GameObject.h"
 #include "Controller.h"
 #include "Tank.h"
+#include "Bot.h"
 #include "Menu.h"
 #include "PauseMenu.h"
+#include "LoseMenu.h"
 
 const int DELAY = 30;
 const int WIDTH = 800, HEIGHT = 600;
@@ -41,10 +43,12 @@ void SpecialK(int key, int a, int b)
 int main(int argc, char** argv)
 {
     srand(time(0));
-    c.SetPlayer(new Tank(10, 10, "Tank", c, false));
+    c.SetPlayer(new Tank(10, 10, "Tank", c, false, 3));
     c.SetMap(new Map("map", 0, 1));
     c.SetMenu(new Menu("TANKS ELITE", &c));
     c.SetPauseMenu(new PauseMenu("PAUSE", &c));
+    c.SetLoseMenu(new LoseMenu("YOU LOSE", &c));
+    c.AddBot(Bot(Tank(40, 40, "Enemy", c, true, 3)));
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

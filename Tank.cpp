@@ -14,13 +14,16 @@
 #include "Map.h"
 
 Tank::Tank(): GameObject(), dir(LEFT){  }
-Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c, bool enemy): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c), isEnemy(enemy)
+Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c, bool enemy, int _hp): 
+    Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c), isEnemy(enemy), hp(_hp)
 {
     collisionMaps.push_back(Map(texfolder+"/left", 0, 1));
     collisionMaps.push_back(Map(texfolder+"/up", 0, 1));
     collisionMaps.push_back(Map(texfolder+"/right", 0, 1));
     collisionMaps.push_back(Map(texfolder+"/down", 0, 1));
     
+    dead = false;
+
     x = _x;
     y = _y;
 
@@ -32,7 +35,7 @@ Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c, bool enemy
     prevShootTime = std::chrono::high_resolution_clock::now();
 }
 
-Tank::Tank(const Tank& t)
+void Tank::Copy(const Tank& t)
 {
     x = t.x;
     y = t.y;
@@ -46,22 +49,19 @@ Tank::Tank(const Tank& t)
     collisionMaps = t.collisionMaps;
     prevStepTime = t.prevStepTime;
     prevShootTime = t.prevShootTime;
+    isEnemy = t.isEnemy;
+    hp = t.hp;
+    dead = t.dead;
+}
+
+Tank::Tank(const Tank& t)
+{
+    Copy(t);
 }
 
 Tank& Tank::operator=(const Tank& t)
 {
-    x = t.x;
-    y = t.y;
-    width = t.width;
-    height = t.height;
-    restoreX = t.restoreX;
-    restoreY = t.restoreY;
-    prevDir = t.prevDir;
-    dir = t.dir;
-    c = t.c;
-    collisionMaps = t.collisionMaps;
-    prevStepTime = t.prevStepTime;
-    prevShootTime = t.prevShootTime;
+    Copy(t);
 }
 
 void Tank::Render() 
@@ -161,10 +161,23 @@ void Tank::Move(Direction d, float dx, float dy)
 
   void Tank::Tick() 
   {
-       
+       if(hp <= 0)
+       {
+           dead = true;
+       }
+  }
+
+  void Tank::Hit()
+  {
+      hp--;
   }
 
   bool Tank::IsEnemy()
   {
       return isEnemy;
+  }
+
+  int Tank::GetHp()
+  {
+      return hp;
   }
