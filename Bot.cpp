@@ -1,7 +1,9 @@
 #include "Bot.h"
-#include <chrono>
 
-Bot(Tank t): tank(t) 
+#include <chrono>
+#include <GL/glut.h>
+
+Bot::Bot(Tank t): tank(t) 
 {  
     keys.push_back(GLUT_KEY_LEFT);
     keys.push_back(GLUT_KEY_UP);
@@ -16,14 +18,15 @@ Bot(Tank t): tank(t)
     prevPerf = std::chrono::system_clock::now();
 }
 
-void Tick()
+void Bot::Tick()
 {
     EmulateKeyboard();
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     double delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - prevOp).count();
     if(delta > perfDelay)
     {
-        int operation = operationQueue.pop_front();
+        int operation = operationQueue.front();
+        operationQueue.pop_front();
         if(operation == shootKey)
         {
             tank.Keyboard(operation);
@@ -35,12 +38,12 @@ void Tick()
     }
 }
 
-void Render()
+void Bot::Render()
 {
     tank.Render();
 }
 
-void EmulateKeyboard()
+void Bot::EmulateKeyboard()
 {
     //проверить, прошло ли достаточно времени
     //сгенерировать случайную длину цепочки
@@ -56,4 +59,9 @@ void EmulateKeyboard()
             operationQueue.push_back(operation);
         }
     }
+}
+
+Tank& Bot::GetTank()
+{
+    return tank;
 }

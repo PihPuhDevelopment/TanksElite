@@ -11,6 +11,7 @@ public:
     void Tick();
     void Render();
     void EmulateKeyboard(); //через определённые промежутки времени вызывает Keyboard у tank
+    Tank& GetTank();
 private:
     Tank tank;
     std::vector<int> keys;
