@@ -1,7 +1,7 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
-#include <GL/freeglut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+//#include <GL/freeglut.h>
 #include <iostream>
 #include "GameObject.h"
 #include "Controller.h"
@@ -49,6 +49,8 @@ int main(int argc, char** argv)
     c.SetPauseMenu(new PauseMenu("PAUSE", &c));
     c.SetLoseMenu(new LoseMenu("YOU LOSE", &c));
     c.AddBot(Bot(Tank(40, 40, "Enemy", c, true, 3)));
+    c.AddBot(Bot(Tank(50, 40, "Enemy", c, true, 3)));
+	c.AddBot(Bot(Tank(60, 40, "Enemy", c, true, 3)));
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

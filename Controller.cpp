@@ -28,24 +28,30 @@ void Controller::HandleBullets()
 	      		++itr;
 	    	}
   		}
-
+		  bool flag = false;
 		itr = playerBullets.begin();
-
-		for(Bot& b: enemies)
-		{
-			while (itr != playerBullets.end()) 
-			{				
-				if(itr->Intersects(b.GetTank()))
-				{
-					b.GetTank().Hit();
-					itr = playerBullets.erase(itr);
+			////for(Bot& b: enemies)
+			////{
+				while (itr != playerBullets.end()) 
+				{		
+					flag = false;
+					for(Bot& b: enemies)
+					{	
+						if(itr->Intersects(b.GetTank()))
+						{
+							b.GetTank().Hit();
+							itr = playerBullets.erase(itr);
+							flag = true;
+						}
+					}
+					//else 
+					//{
+						if(!flag)
+							++itr;
+					//}
 				}
-	    		else 
-	    		{
-	      			++itr;
-	    		}
-  			}
-		}
+			////}
+
 }
 
 void Controller::HandleBlocks()
@@ -144,7 +150,7 @@ void Controller::Tick()
 
 			auto itr2 = enemies.begin();
 			while (itr2 != enemies.end()) { 
-				std::cout << itr2->GetTank().GetHp() << std::endl;
+				//std::cout << itr2->GetTank().GetHp() << std::endl;
 	    		if (itr2->GetTank().IsDead()) {
 	      			itr2 = enemies.erase(itr2);
 	    		} 
@@ -153,7 +159,8 @@ void Controller::Tick()
 	      			++itr2;
 	    		}
   			}
-
+			if(enemies.size() == 2)
+				AddBot(Bot(Tank(10, 10, "Enemy", *this, true, 3)));
 			for(Bot& b: enemies)
 			{
 				b.Tick();
@@ -222,10 +229,14 @@ void Controller::StopGame()
 
 void Controller::ResetGame()
 {
+	enemies.clear();
 	delete map;
 	delete player;
 	SetPlayer(new Tank(10, 10, "Tank", *this, false, 3));
    	SetMap(new Map("map", 0, 1));
+	AddBot(Bot(Tank(40, 40, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(50, 40, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(60, 40, "Enemy", *this, true, 3)));
 	playerBullets.clear();
 	enemyBullets.clear();
 }
