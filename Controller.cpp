@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Menu.h"
 #include "PauseMenu.h"
+#include "Bot.h"
 
 Controller::Controller(): start(false), pause(false)
 {
@@ -20,37 +21,37 @@ void Controller::HandleBlocks()
 			player->Restore();
 		}
 
-		for(int i=0; i<3; ++i)
-			if(enemies[i].Intersects(b))
-			{
-				enemies[i].Restore();
-			}
-
 		auto itr = playerBullets.begin();
-		while (itr != playerBullets.end()) {
-    			if (itr->Intersects(b)) {
-      				itr = playerBullets.erase(itr);
-      				if(b.IsDestructible()){
-      					b.SetHp(b.GetHp()-1);
-      				}
-    			}	 
-    			else 
-    			{
-      				++itr;
-    			}
+		while (itr != playerBullets.end()) 
+		{
+    		if (itr->Intersects(b)) 
+			{
+      			itr = playerBullets.erase(itr);
+      			if(b.IsDestructible())
+				{
+      				b.SetHp(b.GetHp()-1);
+      			}
+    		}	 
+    		else 
+    		{
+      			++itr;
+    		}
   		}
 		itr = enemyBullets.begin();
-		while (itr != enemyBullets.end()) {
-	    		if (itr->Intersects(b)) {
-	      			itr = enemyBullets.erase(itr);
-	      			if(b.IsDestructible()){
-	      				b.SetHp(b.GetHp()-1);
-	      			}
-	    		} 
-	    		else 
-	    		{
-	      			++itr;
-	    		}
+		while (itr != enemyBullets.end()) 
+		{
+	    	if (itr->Intersects(b)) 
+			{
+	      		itr = enemyBullets.erase(itr);
+	      		if(b.IsDestructible())
+				{
+	      			b.SetHp(b.GetHp()-1);
+	      		}
+	    	} 
+	    	else 
+	    	{
+	      		++itr;
+	    	}
   		}
 	}
 }
@@ -61,12 +62,8 @@ void Controller::Tick()
 	{
 		if(!pause)
 		{
-			count ++;
 			player->Tick();
 			map->Tick();
-
-			for (int i=0; i<3; ++i)
-				enemies[i].Tick();
 
 			for (Bullet& bul: playerBullets) 
 			{
@@ -109,9 +106,6 @@ void Controller::Render()
 		if(!pause)
 		{
 			player->Render();
-
-			for (int i=0; i<3; ++i)
-				enemies[i].Render();
 
 			map->Render();
 
@@ -160,7 +154,7 @@ void Controller::ResetGame()
 {
 	delete map;
 	delete player;
-	SetPlayer(new Tank(10, 10, "Tank", *this));
+	SetPlayer(new Tank(10, 10, "Tank", *this, false));
    	SetMap(new Map("map", 0, 1));
 	playerBullets.clear();
 	enemyBullets.clear();

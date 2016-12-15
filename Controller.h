@@ -10,6 +10,7 @@
 class Tank;
 class Menu;
 class PauseMenu;
+class Bot;
 
 class Controller
 {	
