@@ -14,7 +14,7 @@
 #include "Map.h"
 
 Tank::Tank(): GameObject(), dir(LEFT){  }
-Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c)
+Tank::Tank(float _x, float _y, std::string texfolder, Controller& _c, bool enemy): Rectangle(_x, _y, 2, 2), Point(_x, _y), dir(LEFT), prevDir(LEFT), c(&_c), isEnemy(enemy)
 {
     collisionMaps.push_back(Map(texfolder+"/left", 0, 1));
     collisionMaps.push_back(Map(texfolder+"/up", 0, 1));
@@ -146,7 +146,10 @@ void Tank::Move(Direction d, float dx, float dy)
         double seconds = dur.count();
         if(seconds >= RELOAD_TIME)
         {
-            c->AddPlayerBullet(Bullet(x+1, y+1, dir));
+            if(!isEnemy)
+                c->AddPlayerBullet(Bullet(x+1, y+1, dir));
+            else
+                c->AddEnemyBullet(Bullet(x+1, y+1, dir));
             prevShootTime = std::chrono::high_resolution_clock::now();
         }
     }
@@ -156,6 +159,12 @@ void Tank::Move(Direction d, float dx, float dy)
         return collisionMaps[dir];
     }
 
-  void Tank::Tick() {
+  void Tank::Tick() 
+  {
        
+  }
+
+  bool Tank::IsEnemy()
+  {
+      return isEnemy;
   }

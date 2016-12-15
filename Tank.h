@@ -17,7 +17,7 @@ class Tank: public GameObject, public Rectangle
 {
 public:
     Tank();
-    Tank(float _x, float _y, std::string texfolder, Controller& _c);
+    Tank(float _x, float _y, std::string texfolder, Controller& _c, bool enemy);
     Tank(const Tank& other);
     Tank& operator=(const Tank&);
     Map& GetCollisionMap();
@@ -27,12 +27,14 @@ public:
     void Restore();
     void Shoot();
     void Tick();
+    bool IsEnemy();
 
  private:
   void Move(Direction d, float dx, float dy);
   const double STEP_TIME = 0.1;
   const double RELOAD_TIME = 0.3;
   float restoreX, restoreY;
+  bool isEnemy;
   Direction prevDir;
   Direction dir;
   Controller* c;
