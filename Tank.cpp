@@ -161,7 +161,7 @@ void Tank::Move(Direction d, float dx, float dy)
 
   void Tank::Tick() 
   {
-       if(hp <= 0)
+       if(hp <= 0 || x <= 0 || x >= 80 || y <= 0 || y >= 60)
        {
            dead = true;
        }

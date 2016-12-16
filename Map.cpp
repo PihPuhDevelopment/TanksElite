@@ -56,7 +56,7 @@ void Map::ReadMapFromFile(const std::string& filename)
 							break;
 				case '2':	blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(0.1f, 0.831f, 0.0f), false)); //undestructible player
 							break;
-				case '3':	blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(0.7f, 0.7f, 0.7f), true, 3)); //destructinble wall
+				case '3':	blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(0.7f, 0.7f, 0.7f), true, 1)); //destructinble wall
 							break;
 				case '4':   blocks.push_back(Block(j - x, i - y, 0.8f, 0.8f, Color(1.0f, 0.298f, 0.02f), true, 3)); //undestructible enemy
 							break;

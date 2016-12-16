@@ -8,9 +8,20 @@
 #include "LoseMenu.h"
 #include "Bot.h"
 
+
 Controller::Controller(): start(false), pause(false), lose(false)
 {
-	score = 10;
+	score = 0;
+}
+
+bool Controller::CollidesBlocks(const Rectangle& r)
+{
+	for(Block& b: map->GetBlocks())
+	{
+		if(b.Intersects(r))
+		return true;
+	}
+	return false;
 }
 
 void Controller::HandleBullets()
@@ -52,6 +63,29 @@ void Controller::HandleBullets()
 				}
 			////}
 
+}
+void Controller::HandleEnemies()
+{
+for(Bot& bot: enemies)
+		{
+			if(player->Intersects(bot.GetTank()))
+			{
+				player->Restore();
+			}
+		}
+	for(int i = 0;i<enemies.size();i++)
+	{
+		for(int j = 0;j<enemies.size();j++)
+		{
+			if(i != j)
+			{
+				if(enemies[i].GetTank().Intersects(enemies[j].GetTank()))
+				{
+					enemies[i].GetTank().Restore();
+				}
+			}
+		}
+	}
 }
 
 void Controller::HandleBlocks()
@@ -133,7 +167,7 @@ void Controller::Tick()
 			}
 
 			HandleBlocks();
-
+			HandleEnemies();
 			HandleBullets();
 
 			int i = 0;
@@ -159,14 +193,37 @@ void Controller::Tick()
 	      			++itr2;
 	    		}
   			}
-			if(enemies.size() == 2)
-				AddBot(Bot(Tank(10, 10, "Enemy", *this, true, 3)));
+			if(enemies.size() <= 2)
+			{
+				srand(time(0));
+				Bot g = Bot(Tank(rand()%70+5, rand()%50+5, "Enemy", *this, true, 3));
+				while(CollidesBlocks(g.GetTank()))
+				{
+					g = Bot(Tank(rand()%70+5, rand()%50+5, "Enemy", *this, true, 3));
+				}
+				int newOpDelay = (g.GetOpDelay() - score*10) < 0 ? 50 : g.GetOpDelay() - score*7;
+				int newPerfDelay = (g.GetPerfDelay() - score*10) < 0 ? 25 : g.GetPerfDelay() - score*4;
+				g.SetOpDelay(newOpDelay);
+				g.SetPerfDelay(newPerfDelay);
+				AddBot(g);
+				score++;
+			}
 			for(Bot& b: enemies)
 			{
 				b.Tick();
 			}
 		}
 	}
+}
+void Controller::RenderScore()
+{
+	glColor3ub( 0, 222, 18);
+	glRasterPos3d(WIDTH-120, HEIGHT+1, 0);
+	std::string s = "Score: " + std::to_string(score);
+   	glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)s.c_str());
+	glRasterPos3d(WIDTH-200, HEIGHT+1, 0);
+	s = "HP: " + std::to_string(player->GetHp());
+   	glutBitmapString(GLUT_BITMAP_9_BY_15, (unsigned char*)s.c_str());
 }
 
 void Controller::Render()
@@ -182,9 +239,8 @@ void Controller::Render()
 		else if(!pause)
 		{
 			player->Render();
-
 			map->Render();
-
+			RenderScore();
 			for (Bullet& b: playerBullets) 
 			{
 				b.Render();
@@ -211,6 +267,7 @@ void Controller::Render()
 void Controller::NewGame()
 {
 	ResetGame();
+	score = 0;
 	pause = false;
 	start = true;
 	lose = false;

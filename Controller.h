@@ -33,10 +33,13 @@ public:
 	void AddBot(Bot b);
 	void Keyboard(unsigned char key);
 	void SpecialKeyboard(int k);
+	void RenderScore();
 	~Controller();
 private:
 	void HandleBlocks();
+	void HandleEnemies();
 	void HandleBullets();
+	bool CollidesBlocks(const Rectangle& r);
 	int score;
 	std::vector<Bullet> playerBullets;
     std::vector<Bullet> enemyBullets;

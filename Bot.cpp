@@ -69,6 +69,26 @@ void Bot::EmulateKeyboard()
     }
 }
 
+void Bot::SetOpDelay(int delay)
+{
+    opDelay = delay;
+}
+
+void Bot::SetPerfDelay(int delay)
+{
+    perfDelay = delay;
+}
+
+int Bot::GetOpDelay()
+{
+    return opDelay;
+}
+
+int Bot::GetPerfDelay()
+{
+    return perfDelay;
+}
+
 Tank& Bot::GetTank()
 {
     return tank;

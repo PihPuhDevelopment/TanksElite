@@ -1,7 +1,7 @@
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-//#include <GL/freeglut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <iostream>
 #include "GameObject.h"
 #include "Controller.h"
@@ -54,11 +54,11 @@ int main(int argc, char** argv)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(WIDTH, HEIGHT);
+    glutInitWindowSize(WIDTH, HEIGHT+20);
     glutCreateWindow("TanksElite");
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, WIDTH, 0, HEIGHT);
+    gluOrtho2D(0, WIDTH, 0, HEIGHT+20);
     glutDisplayFunc(Render);
     glutTimerFunc(DELAY, Tick, 0);
     glutSpecialFunc(SpecialK);

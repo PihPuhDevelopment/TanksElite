@@ -12,6 +12,10 @@ public:
     void Render();
     void EmulateKeyboard(); //через определённые промежутки времени вызывает Keyboard у tank
     Tank& GetTank();
+    void SetOpDelay(int delay);
+    void SetPerfDelay(int delay);
+    int GetOpDelay();
+    int GetPerfDelay();
 private:
     Tank tank;
     std::vector<int> keys;

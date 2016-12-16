@@ -11,7 +11,7 @@
 
 LoseMenu::LoseMenu(std::string _title, Controller* _c): MenuBase(_title, _c)
 {
-	items.push_back("EXIT GAME");
+	items.push_back("TO MENU");
 	originalTitle = _title;
 }
 
@@ -27,5 +27,5 @@ void LoseMenu::SelectMenuItem(int pos)
 
 void LoseMenu::SetScore(int score)
 {
-	title = originalTitle + " " + std::to_string(score);
+	title = originalTitle + " | Your Score: " + std::to_string(score);
 }
