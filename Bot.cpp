@@ -11,8 +11,8 @@ Bot::Bot(Tank t): tank(t)
     keys.push_back(GLUT_KEY_RIGHT);
     keys.push_back(GLUT_KEY_DOWN);
     keys.push_back(32);
-    opDelay = 430;
-    perfDelay = 200;
+    opDelay = 50;
+    perfDelay = 25;
     shootKey = 32;
 
     prevOp = std::chrono::system_clock::now();
@@ -58,7 +58,8 @@ void Bot::EmulateKeyboard()
     double delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - prevOp).count();
     if(delta > opDelay)
     {
-        int length = rand() % 3 + 1; //генерируем цепочки длиной 1..4
+        //int length = rand() % 3 + 1; //генерируем цепочки длиной 1..4
+        int length = 1;
         int operation = rand() % 5; //генерируем случайную операцию
         for(int i = 0;i<length;i++)
         {

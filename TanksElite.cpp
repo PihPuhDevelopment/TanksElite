@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 {
     srand(time(0));
     c.SetPlayer(new Tank(10, 10, "Tank", c, false, 3));
-    c.SetMap(new Map("map", 0, 1));
+    c.SetMap(new Map("map2",0, 1));
     c.SetMenu(new Menu("TANKS ELITE", &c));
     c.SetPauseMenu(new PauseMenu("PAUSE", &c));
     c.SetLoseMenu(new LoseMenu("YOU LOSE", &c));

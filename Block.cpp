@@ -16,12 +16,15 @@ Block::Block(float x, float y, float width, float height, Color c, bool destr, i
 
 void Block::Tick()
 {
-
+	
 }
 
 void Block::Render()
 {
-	glColor3f(color.r, color.g, color.b);
+	glColor3ub(color.r, color.g, color.b);
+	color.r = (color.r+rand()%40)%255;
+	color.g = (color.g+rand()%40)%255;
+	color.b = (color.b+rand()%40)%255;
 	glRectf(x*SCALE, y*SCALE, (x+width)*SCALE, (y+height)*SCALE);
 }
 

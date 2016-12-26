@@ -2,9 +2,9 @@
 #define COLOR_H
 struct Color
 {
-	Color(float _r, float _g, float _b) {r = _r; g = _g; b = _b;}
-	float r;
-	float g;
-	float b;
+	Color(int _r, int _g, int _b) {r = _r; g = _g; b = _b;}
+	int r;
+	int g;
+	int b;
 };
 #endif

@@ -289,11 +289,20 @@ void Controller::ResetGame()
 	enemies.clear();
 	delete map;
 	delete player;
-	SetPlayer(new Tank(10, 10, "Tank", *this, false, 3));
-   	SetMap(new Map("map", 0, 1));
-	AddBot(Bot(Tank(40, 40, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(50, 40, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(60, 40, "Enemy", *this, true, 3)));
+	SetPlayer(new Tank(rand()%70, rand()%50+5, "Tank", *this, false, 3));
+   	SetMap(new Map("map2", 0, 1));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
 	playerBullets.clear();
 	enemyBullets.clear();
 }
