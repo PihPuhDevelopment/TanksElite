@@ -12,6 +12,7 @@
 Menu::Menu(std::string _title, Controller* _c): MenuBase(_title, _c)
 {
 	items.push_back("NEW GAME");
+	items.push_back("DIFFICULTY");
 	items.push_back("EXIT");
 }
 
@@ -23,6 +24,9 @@ void Menu::SelectMenuItem(int pos)
 			c->NewGame();
 			break;
 		case 1:
+			c->SwitchDiffMenu();
+			break;
+		case 2:
 			exit(0);
 			break;
 	}

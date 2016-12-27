@@ -4,15 +4,15 @@
 #include <iostream>
 #include <GL/glut.h>
 
-Bot::Bot(Tank t): tank(t) 
+Bot::Bot(Tank t, int d): tank(t), difficulty(d)
 {  
     keys.push_back(GLUT_KEY_LEFT);
     keys.push_back(GLUT_KEY_UP);
     keys.push_back(GLUT_KEY_RIGHT);
     keys.push_back(GLUT_KEY_DOWN);
     keys.push_back(32);
-    opDelay = 50;
-    perfDelay = 25;
+    opDelay = 250/(1+difficulty);
+    perfDelay = 125/(1+difficulty);
     shootKey = 32;
 
     prevOp = std::chrono::system_clock::now();

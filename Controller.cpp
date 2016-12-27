@@ -6,22 +6,14 @@
 #include "Menu.h"
 #include "PauseMenu.h"
 #include "LoseMenu.h"
+#include "DifficultyMenu.h"
 #include "Bot.h"
 
 
 Controller::Controller(): start(false), pause(false), lose(false)
 {
 	score = 0;
-}
-
-bool Controller::CollidesBlocks(const Rectangle& r)
-{
-	for(Block& b: map->GetBlocks())
-	{
-		if(b.Intersects(r))
-		return true;
-	}
-	return false;
+	startBotNumber = 5;
 }
 
 void Controller::HandleBullets()
@@ -193,20 +185,16 @@ void Controller::Tick()
 	      			++itr2;
 	    		}
   			}
-			if(enemies.size() <= 2)
+			if(enemies.size() <= 0)
 			{
 				srand(time(0));
-				Bot g = Bot(Tank(rand()%70+5, rand()%50+5, "Enemy", *this, true, 3));
-				while(CollidesBlocks(g.GetTank()))
+				startBotNumber+=2;
+				if(score == 0) score = 2;
+				for(int i = 0;i<startBotNumber;i++)
 				{
-					g = Bot(Tank(rand()%70+5, rand()%50+5, "Enemy", *this, true, 3));
+					Bot g = Bot(Tank(rand()%70+5, rand()%50+5, "Enemy", *this, true, 3), difficulty);
+					AddBot(g);
 				}
-				int newOpDelay = (g.GetOpDelay() - score*10) < 0 ? 50 : g.GetOpDelay() - score*7;
-				int newPerfDelay = (g.GetPerfDelay() - score*10) < 0 ? 25 : g.GetPerfDelay() - score*4;
-				g.SetOpDelay(newOpDelay);
-				g.SetPerfDelay(newPerfDelay);
-				AddBot(g);
-				score++;
 			}
 			for(Bot& b: enemies)
 			{
@@ -229,7 +217,10 @@ void Controller::RenderScore()
 void Controller::Render()
 {
 	if(!start)
-		menu->Render();
+		if(inDiff)
+			dmenu->Render();
+		else
+			menu->Render();
 	else
 	{
 		if(lose)
@@ -271,6 +262,7 @@ void Controller::NewGame()
 	pause = false;
 	start = true;
 	lose = false;
+	startBotNumber = 5;
 }
 
 void Controller::Continue()
@@ -291,18 +283,12 @@ void Controller::ResetGame()
 	delete player;
 	SetPlayer(new Tank(rand()%70, rand()%50+5, "Tank", *this, false, 3));
    	SetMap(new Map("map2", 0, 1));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
-	AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3)));
+
+	for(int i = 0;i<startBotNumber;i++)
+	{
+		AddBot(Bot(Tank(rand()%70, rand()%50+5, "Enemy", *this, true, 3), difficulty));
+	}
+
 	playerBullets.clear();
 	enemyBullets.clear();
 }
@@ -332,6 +318,11 @@ void Controller::SetLoseMenu(LoseMenu* menu)
 	this->lmenu = menu;
 }
 
+void Controller::SetDifficultyMenu(DifficultyMenu* menu)
+{
+	this->dmenu = menu;
+}
+
 void Controller::AddPlayerBullet(Bullet b)
 {
 	playerBullets.push_back(b);
@@ -345,6 +336,11 @@ void Controller::AddEnemyBullet(Bullet b)
 void Controller::AddBot(Bot b)
 {
 	enemies.push_back(b);
+}
+
+void Controller::SwitchDiffMenu()
+{
+	inDiff = !inDiff;
 }
 
 void Controller::Keyboard(unsigned char key)
@@ -370,7 +366,10 @@ void Controller::Keyboard(unsigned char key)
 	}
 	else
 	{
-		menu->Keyboard(key);
+		if(inDiff)
+			dmenu->Keyboard(key);
+		else
+			menu->Keyboard(key);
 	}
 }
 void Controller::SpecialKeyboard(int key)
@@ -391,8 +390,16 @@ void Controller::SpecialKeyboard(int key)
 	}
 	else
 	{
-		menu->SpecialKeyboard(key);
+		if(inDiff)
+			dmenu->SpecialKeyboard(key);
+		else
+			menu->SpecialKeyboard(key);
 	}
+}
+
+void Controller::SetDifficulty(int d)
+{
+	difficulty = d;
 }
 
 Controller::~Controller()

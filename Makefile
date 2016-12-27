@@ -1,5 +1,5 @@
-TanksElite: TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o MenuBase.o PauseMenu.o Bot.o LoseMenu.o
-	g++ -g Bot.o TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o MenuBase.o PauseMenu.o LoseMenu.o -o TanksElite -lglut -lGL -lGLU -lGLEW
+TanksElite: TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o Block.o MenuBase.o PauseMenu.o Bot.o LoseMenu.o DifficultyMenu.o
+	g++ -g Bot.o TanksElite.o Tank.o Controller.o Map.o Menu.o Point.o GameObject.o Bullet.o Rectangle.o DifficultyMenu.o Block.o MenuBase.o PauseMenu.o LoseMenu.o libportaudio.a -o TanksElite -lrt -lm -lasound -pthread -lglut -lGL -lGLU -lGLEW
 
 TanksElite.o: TanksElite.cpp
 	g++ -c -g TanksElite.cpp -std=c++11
@@ -43,5 +43,8 @@ Bot.o: Bot.cpp
 LoseMenu.o: LoseMenu.cpp
 	g++ -c -g LoseMenu.cpp -std=c++11
 
+DifficultyMenu.o: DifficultyMenu.cpp
+	g++ -c -g DifficultyMenu.cpp -std=c++11
+
 clean:
-	rm -f *.o *.a *.out binary
+	rm -f *.o *.out binary

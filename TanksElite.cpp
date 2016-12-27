@@ -10,6 +10,9 @@
 #include "Menu.h"
 #include "PauseMenu.h"
 #include "LoseMenu.h"
+#include "DifficultyMenu.h"
+#include "portaudio.h"
+#include "Color.h"
 
 const int DELAY = 30;
 const int WIDTH = 800, HEIGHT = 600;
@@ -20,6 +23,8 @@ Controller c;
 void Render() {
 	glFlush();
 	glClear(GL_COLOR_BUFFER_BIT);
+    glColor3ub(rand()%255, rand()%255, rand()%255);
+	glRectf(0, 0, WIDTH, HEIGHT);
 	c.Render();
 }
 
@@ -43,14 +48,13 @@ void SpecialK(int key, int a, int b)
 int main(int argc, char** argv)
 {
     srand(time(0));
+
     c.SetPlayer(new Tank(10, 10, "Tank", c, false, 3));
     c.SetMap(new Map("map2",0, 1));
     c.SetMenu(new Menu("TANKS ELITE", &c));
     c.SetPauseMenu(new PauseMenu("PAUSE", &c));
     c.SetLoseMenu(new LoseMenu("YOU LOSE", &c));
-    c.AddBot(Bot(Tank(40, 40, "Enemy", c, true, 3)));
-    c.AddBot(Bot(Tank(50, 40, "Enemy", c, true, 3)));
-	c.AddBot(Bot(Tank(60, 40, "Enemy", c, true, 3)));
+    c.SetDifficultyMenu(new DifficultyMenu("DIFFICULTY", &c));
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

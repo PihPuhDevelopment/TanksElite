@@ -7,7 +7,7 @@
 class Bot
 {
 public:
-    Bot(Tank t);
+    Bot(Tank t, int difficulty);
     void Tick();
     void Render();
     void EmulateKeyboard(); //через определённые промежутки времени вызывает Keyboard у tank
@@ -23,6 +23,7 @@ private:
     std::list<int> operationQueue;
     int opDelay, perfDelay; //opDelay - задержка добавления операций в очередь
                             //perfDelay - задержка выполнения операций из очереди
+    int difficulty;
     std::chrono::system_clock::time_point prevOp; //prevOp - время предыдущего добавления операций
     std::chrono::system_clock::time_point prevPerf; //prevPerf - время предыдущего выполнения операций
 };
